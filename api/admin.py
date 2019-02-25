@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Offer, Skill
+from .models import Offer
 
 # Register your models here.
 admin.site.register(Offer)
-admin.site.register(Skill)
+
