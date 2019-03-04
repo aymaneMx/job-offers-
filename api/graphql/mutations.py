@@ -1,44 +1,32 @@
 import graphene
 from django.contrib.auth import get_user_model
 
-from api.graphql.types import UserType
+from api.graphql.types import UserType, OfferType
 from api.models import Offer
 
 
 class CreateOffer(graphene.Mutation):
-    # offer = graphene.Field(OfferType)
-    id = graphene.Int()
-    title = graphene.String()
-    description = graphene.String()
-    skills_list = graphene.String()
-    user = graphene.Field(UserType)
+    offer = graphene.Field(OfferType)
 
     class Arguments:
         title = graphene.String(required=True)
         description = graphene.String(required=True)
         skills_list = graphene.String()
 
-    def mutate(self, info, title, description, skills_list):
+    def mutate(self, info, **kwargs):
         user = info.context.user
+
         if user.is_anonymous:
-            raise Exception('You must be logged to vote!')
+            raise Exception('You must be logged to create an offer !')
 
         offer = Offer(
-            title=title,
-            description=description,
-            skills_list=skills_list,
+            **kwargs,
             user=user
         )
 
         offer.save()
 
-        return CreateOffer(
-            id=offer.id,
-            title=offer.title,
-            description=offer.description,
-            skills_list=offer.skills_list,
-            user=offer.user,
-        )
+        return CreateOffer(offer=offer)
 
 
 class CreateUser(graphene.Mutation):

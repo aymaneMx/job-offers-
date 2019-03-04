@@ -1,52 +1,24 @@
-*.py[cod]
-__pycache__
+*.pyc
+*.db
+bin/
+include/
+lib/
+local/
+env
+site
 
-# C extensions
-*.so
-
-# Packages
-*.egg
-*.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
-.installed.cfg
-lib
-lib64
-db.sqlite3
-lastfailed
-
-# Installer logs
-pip-log.txt
-
-# Unit test / coverage reports
-.coverage
-.tox
-nosetests.xml
-htmlcov
-
-# Translations
-*.mo
-
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-# Pycharm/Intellij
+docker
 .idea
+.vscode
+.cache
+media
+db.sqlite3
 
-# Complexity
-output/*.html
-output/*/index.html
-
-# Sphinx
-docs/_build
-
-#GCalendar
-credentials.dat
+.DS_Store
+tests/.DS_Store
+tests/fixtures/.DS_Store
+tests/fixtures/cassettes/.DS_Store
+celerybeat-schedule
+tmp/
+.coverage
+coverage.*

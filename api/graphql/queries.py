@@ -4,13 +4,22 @@ from django.contrib.auth import get_user_model
 from api.graphql.types import OfferType, UserType
 from api.models import Offer
 
+from django.db.models import Q
+
 
 class Query(graphene.ObjectType):
     current_user = graphene.Field(UserType)
-    all_offers = graphene.List(OfferType)
+    all_offers = graphene.List(OfferType, search=graphene.String())
     all_users = graphene.List(UserType)
 
-    def resolve_all_offers(self, info, **kwargs):
+    def resolve_all_offers(self, info, search=None, **kwargs):
+        if search:
+            filter = (
+                Q(title__icontains=search) |
+                Q(description__icontains=search)
+            )
+            return Offer.objects.filter(filter)
+
         return Offer.objects.all()
 
     def resolve_all_users(self, info, **kwargs):
