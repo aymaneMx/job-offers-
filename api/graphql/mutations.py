@@ -11,7 +11,7 @@ class CreateOffer(graphene.Mutation):
     class Arguments:
         title = graphene.String(required=True)
         description = graphene.String(required=True)
-        skills_list = graphene.String()
+        skills_list = graphene.List(graphene.String)
 
     def mutate(self, info, **kwargs):
         user = info.context.user

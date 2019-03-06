@@ -9,10 +9,10 @@ from django.db.models import Q
 
 class Query(graphene.ObjectType):
     current_user = graphene.Field(UserType)
-    all_offers = graphene.List(OfferType, search=graphene.String())
-    all_users = graphene.List(UserType)
+    offers = graphene.List(OfferType, search=graphene.String())
+    users = graphene.List(UserType)
 
-    def resolve_all_offers(self, info, search=None, **kwargs):
+    def resolve_offers(self, info, search=None, **kwargs):
         if search:
             filter = (
                 Q(title__icontains=search) |
@@ -22,7 +22,7 @@ class Query(graphene.ObjectType):
 
         return Offer.objects.all()
 
-    def resolve_all_users(self, info, **kwargs):
+    def resolve_users(self, info, **kwargs):
         return get_user_model().objects.all()
 
     def resolve_current_user(self, info):
