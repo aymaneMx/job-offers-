@@ -29,6 +29,24 @@ class CreateOffer(graphene.Mutation):
         return CreateOffer(offer=offer)
 
 
+class DeleteOffer(graphene.Mutation):
+    done = graphene.Boolean()
+
+    class Arguments:
+        id = graphene.Int(required=True)
+
+    def mutate(self, info, id):
+
+        try:
+            offer = Offer.objects.get(pk=id)
+            offer.delete()
+            done = True
+        except Offer.DoesNotExist:
+            raise Exception('Offer matching query does not exist!')
+
+        return DeleteOffer(done=done)
+
+
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
 
@@ -50,4 +68,5 @@ class CreateUser(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_offer = CreateOffer.Field()
+    delete_offer = DeleteOffer.Field()
     create_user = CreateUser.Field()
