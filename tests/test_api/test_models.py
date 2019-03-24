@@ -31,13 +31,13 @@ def test_offer_model():
     offer = OfferFactory(
         title='title test',
         description='description description description description description ',
-        skills_list='django',
+        skills_list=['django', 'graphql'],
         user=user
     )
 
     assert offer.title == 'title test'
     assert offer.description == 'description description description description description '
-    assert offer.skills_list == 'django'
+    assert offer.skills_list == ['django', 'graphql']
 
     assert str(offer) == 'title test'
 

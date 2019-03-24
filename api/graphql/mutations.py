@@ -11,7 +11,7 @@ class CreateOffer(graphene.Mutation):
     class Arguments:
         title = graphene.String(required=True)
         description = graphene.String(required=True)
-        skills_list = graphene.String()
+        skills_list = graphene.List(graphene.String)
 
     def mutate(self, info, **kwargs):
         user = info.context.user
@@ -27,6 +27,24 @@ class CreateOffer(graphene.Mutation):
         offer.save()
 
         return CreateOffer(offer=offer)
+
+
+class DeleteOffer(graphene.Mutation):
+    done = graphene.Boolean()
+
+    class Arguments:
+        id = graphene.Int(required=True)
+
+    def mutate(self, info, id):
+
+        try:
+            offer = Offer.objects.get(pk=id)
+            offer.delete()
+            done = True
+        except Offer.DoesNotExist:
+            raise Exception('Offer matching query does not exist!')
+
+        return DeleteOffer(done=done)
 
 
 class CreateUser(graphene.Mutation):
@@ -50,4 +68,5 @@ class CreateUser(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_offer = CreateOffer.Field()
+    delete_offer = DeleteOffer.Field()
     create_user = CreateUser.Field()
